@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PlayMeNext</string>
+    <string name="add_piece">Add Piece</string>
+
+    <string name="hint_title">Title...</string>
+    <string name="button_save">Save</string>
+    <string name="not_saved">Empty title was not saved.</string>
 </resources>
