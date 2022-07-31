@@ -5,4 +5,8 @@
     <string name="hint_title">Title...</string>
     <string name="button_save">Save</string>
     <string name="not_saved">Empty title was not saved.</string>
+    <string name="hint_subtitle">Subtitle...</string>
+    <string name="hint_composer">Composer...</string>
+    <string name="hint_arranger">Arranger...</string>
+    <string name="hint_priority">Priority...</string>
 </resources>
