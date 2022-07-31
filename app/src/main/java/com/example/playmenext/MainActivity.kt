@@ -63,9 +63,8 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == newPieceActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data?.getStringExtra(EditPieceActivity.EXTRA_REPLY)?.let {
-                val piece = PieceToPractice(title = it)
-                _piecesViewModel.insert(piece)
+            data?.getParcelableExtra<PieceToPractice>(EditPieceActivity.EXTRA_REPLY)?.let {
+                _piecesViewModel.insert(it)
             }
         }
         else {

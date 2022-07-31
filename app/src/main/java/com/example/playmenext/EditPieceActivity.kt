@@ -42,8 +42,14 @@ class EditPieceActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_CANCELED, replyIntent)
             }
             else {
-                val word = _editTitleView.text.toString()
-                replyIntent.putExtra(EXTRA_REPLY, word)
+                val piece = PieceToPractice(
+                    title = _editTitleView.text.toString(),
+                    subTitle = _editSubtitleView.text.toString(),
+                    composer = _editComposerView.text.toString(),
+                    arranger = _editArrangerView.text.toString(),
+                    practicePriority = _editPriorityView.text.toString().toDouble()
+                )
+                replyIntent.putExtra(EXTRA_REPLY, piece)
                 setResult(Activity.RESULT_OK, replyIntent)
             }
             finish()
