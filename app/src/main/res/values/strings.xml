@@ -9,4 +9,9 @@
     <string name="hint_composer">Composer...</string>
     <string name="hint_arranger">Arranger...</string>
     <string name="hint_priority">Priority...</string>
+    <string name="lbl_title">Title</string>
+    <string name="lbl_subtitle">Subtitle</string>
+    <string name="lbl_composer">Composer</string>
+    <string name="lbl_arranger">Arranger</string>
+    <string name="lbl_priority">Priority</string>
 </resources>
