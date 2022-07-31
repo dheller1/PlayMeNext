@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,9 +44,20 @@ class MainActivity : AppCompatActivity() {
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {
             val intent = Intent(this@MainActivity, EditPieceActivity::class.java)
-            startActivityForResult(intent, newPieceActivityRequestCode)
+            resultLauncher.launch(intent)
         }
     }
+
+    private var resultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) {
+            result ->
+            if(result.resultCode == Activity.RESULT_OK) {
+                val intent : Intent? = result.data
+                intent?.getParcelableExtra<PieceToPractice>(EditPieceActivity.EXTRA_REPLY)?.let {
+                    _piecesViewModel.insert(it)
+                }
+            }
+        }
 
     private fun onPieceClicked(item : PieceToPractice) : Unit {
         // Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
@@ -53,22 +65,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, EditPieceActivity::class.java).apply {
                 putExtra(EXTRA_PIECE_INST, item)
             }
-            startActivity(intent)
-        }
-    }
-
-    @Suppress("OVERRIDE_DEPRECATION")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        @Suppress("DEPRECATION")
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(requestCode == newPieceActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data?.getParcelableExtra<PieceToPractice>(EditPieceActivity.EXTRA_REPLY)?.let {
-                _piecesViewModel.insert(it)
-            }
-        }
-        else {
-            Toast.makeText(applicationContext, R.string.not_saved, Toast.LENGTH_LONG).show()
+            resultLauncher.launch(intent)
         }
     }
 }
