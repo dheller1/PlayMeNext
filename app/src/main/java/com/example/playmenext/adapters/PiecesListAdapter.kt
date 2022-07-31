@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playmenext.R
 import com.example.playmenext.domain.PieceToPractice
 
-class PiecesListAdapter : ListAdapter<PieceToPractice, PiecesListAdapter.PieceViewHolder>(PieceComparator()) {
+class PiecesListAdapter(
+    private val _onItemClickListener : ((PieceToPractice) -> Unit)? = null
+) : ListAdapter<PieceToPractice, PiecesListAdapter.PieceViewHolder>(PieceComparator()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : PieceViewHolder {
         return PieceViewHolder.create(parent)
     }
@@ -18,6 +21,9 @@ class PiecesListAdapter : ListAdapter<PieceToPractice, PiecesListAdapter.PieceVi
     override fun onBindViewHolder(holder: PieceViewHolder, position: Int) {
         val current = getItem(position)
         holder.bind(current.title)
+        if(_onItemClickListener != null) {
+            holder.itemView.setOnClickListener{ _onItemClickListener.invoke(current) }
+        }
     }
 
     class PieceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

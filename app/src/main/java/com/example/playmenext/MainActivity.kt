@@ -16,7 +16,6 @@ import com.example.playmenext.viewmodel.PieceToPracticeViewModel
 import com.example.playmenext.viewmodel.PieceToPracticeViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-
 class MainActivity : AppCompatActivity() {
     private val _piecesViewModel: PieceToPracticeViewModel by viewModels {
         PieceToPracticeViewModelFactory((application as MainApplication).repository)
@@ -29,7 +28,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = PiecesListAdapter()
+        val adapter = PiecesListAdapter(
+            _onItemClickListener = this::onPieceClicked
+        )
+
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -41,6 +44,16 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener {
             val intent = Intent(this@MainActivity, EditPieceActivity::class.java)
             startActivityForResult(intent, newPieceActivityRequestCode)
+        }
+    }
+
+    private fun onPieceClicked(item : PieceToPractice) : Unit {
+        // Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
+        if(item.id != null) {
+            val intent = Intent(this, EditPieceActivity::class.java).apply {
+                putExtra(EXTRA_PIECE_INST, item)
+            }
+            startActivity(intent)
         }
     }
 
