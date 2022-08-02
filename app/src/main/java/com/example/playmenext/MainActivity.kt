@@ -53,8 +53,15 @@ class MainActivity : AppCompatActivity() {
             result ->
             if(result.resultCode == Activity.RESULT_OK) {
                 val intent : Intent? = result.data
+
                 intent?.getParcelableExtra<PieceToPractice>(EditPieceActivity.EXTRA_REPLY)?.let {
-                    _piecesViewModel.insert(it)
+                    it.id = intent.getIntExtra(EXTRA_PIECE_ID, -1)
+                    if(intent.getBooleanExtra(EditPieceActivity.EXTRA_REQUEST_DELETE, false)) {
+                        _piecesViewModel.delete(it)
+                    }
+                    else {
+                        _piecesViewModel.insert(it)
+                    }
                 }
             }
         }
@@ -63,6 +70,11 @@ class MainActivity : AppCompatActivity() {
         // Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
         if(item.id != null) {
             val intent = Intent(this, EditPieceActivity::class.java).apply {
+                // Parcelize seems not to transfer the id field, so we do it manually
+                // FIXME: This is a hack, until I understand how to do it better...
+                item.id?.let {
+                    putExtra(EXTRA_PIECE_ID, it)
+                }
                 putExtra(EXTRA_PIECE_INST, item)
             }
             resultLauncher.launch(intent)

@@ -13,6 +13,10 @@ class PieceToPracticeViewModel(private val _repo : PiecesRepository) : ViewModel
     fun insert(piece : PieceToPractice) = viewModelScope.launch {
         _repo.insert(piece)
     }
+
+    fun delete(piece : PieceToPractice) = viewModelScope.launch {
+        _repo.delete(piece)
+    }
 }
 
 class PieceToPracticeViewModelFactory(private val _repo : PiecesRepository) : ViewModelProvider.Factory {

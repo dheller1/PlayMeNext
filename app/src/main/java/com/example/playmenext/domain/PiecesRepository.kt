@@ -11,4 +11,9 @@ class PiecesRepository(private val _pieceDao: PieceToPracticeDao) {
     suspend fun insert(piece: PieceToPractice) {
         _pieceDao.insert(piece)
     }
+
+    @WorkerThread
+    suspend fun delete(piece: PieceToPractice) {
+        _pieceDao.delete(piece)
+    }
 }

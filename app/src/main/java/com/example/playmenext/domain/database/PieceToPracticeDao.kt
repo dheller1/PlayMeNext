@@ -1,9 +1,6 @@
 package com.example.playmenext.domain.database
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.example.playmenext.domain.PieceToPractice
 import com.example.playmenext.domain.TABLE_NAME
 import kotlinx.coroutines.flow.Flow
@@ -18,4 +15,7 @@ interface PieceToPracticeDao {
 
     @Query("DELETE FROM $TABLE_NAME")
     suspend fun deleteAll()
+
+    @Delete
+    suspend fun delete(piece : PieceToPractice)
 }
