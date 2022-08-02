@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import com.example.playmenext.domain.PieceToPractice
 
-const val EXTRA_PIECE_ID = "com.example.playmenext.PIECE_ID"
 const val EXTRA_PIECE_INST = "com.example.playmenext.PIECE_INST"
 
 class EditPieceActivity : AppCompatActivity() {
@@ -32,20 +31,19 @@ class EditPieceActivity : AppCompatActivity() {
         _editArrangerView = findViewById(R.id.edit_arranger)
         _editPriorityView = findViewById(R.id.edit_priority)
 
-        _existingPiece = intent.getParcelableExtra(EXTRA_PIECE_INST)
-        val id = intent.getIntExtra(EXTRA_PIECE_ID, -1)
-        if(_existingPiece != null && id >= 0) {
-            _existingPiece?.id = id
-        }
 
+        val saveBtn = findViewById<Button>(R.id.button_save)
+        val deleteBtn = findViewById<Button>(R.id.button_delete)
+
+        _existingPiece = intent.getParcelableExtra(EXTRA_PIECE_INST)
         if(_existingPiece != null) {
             applyDataToUi(_existingPiece)
         }
         else {
             _existingPiece = PieceToPractice("")
+            deleteBtn.visibility = View.GONE
         }
 
-        val saveBtn = findViewById<Button>(R.id.button_save)
         saveBtn.setOnClickListener{
             val replyIntent = Intent()
             if(TextUtils.isEmpty(_editTitleView.text)) {
@@ -54,26 +52,14 @@ class EditPieceActivity : AppCompatActivity() {
             else {
                 applyDataToPiece()
                 replyIntent.putExtra(EXTRA_REPLY, _existingPiece)
-                // Parcelize seems not to transfer the id field, so we do it manually
-                // FIXME: This is a hack, until I understand how to do it better...
-                _existingPiece?.id.let {
-                    intent.putExtra(EXTRA_PIECE_ID, it)
-                }
                 setResult(Activity.RESULT_OK, replyIntent)
             }
             finish()
         }
-
-        val deleteBtn = findViewById<Button>(R.id.button_delete)
         deleteBtn.setOnClickListener{
             applyDataToPiece()
             val intent = Intent()
             intent.putExtra(EXTRA_REPLY, _existingPiece)
-            // Parcelize seems not to transfer the id field, so we do it manually
-            // FIXME: This is a hack, until I understand how to do it better...
-            _existingPiece?.id.let {
-                intent.putExtra(EXTRA_PIECE_ID, it)
-            }
             intent.putExtra(EXTRA_REQUEST_DELETE, true)
             setResult(Activity.RESULT_OK, intent)
             finish()

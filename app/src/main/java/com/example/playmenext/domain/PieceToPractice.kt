@@ -15,7 +15,6 @@ data class PieceToPractice(
     var composer: String = "", // the piece's composer
     var arranger: String = "", // who arranged the piece
     var practicePriority: Double = 1.0, // how frequently the user wants to practice this piece
-) : Parcelable {
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null  // unique identifier of the piece
-}
+    val id: Int? = null  // unique identifier of the piece
+) : Parcelable
