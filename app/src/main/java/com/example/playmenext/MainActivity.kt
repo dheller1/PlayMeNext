@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    private fun onPieceClicked(item : PieceToPractice) : Unit {
+    private fun onPieceClicked(item : PieceToPractice) {
         // Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
         if(item.id != null) {
             val intent = Intent(this, EditPieceActivity::class.java).apply {

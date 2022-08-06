@@ -4,7 +4,7 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 const val TABLE_NAME : String = "pieces_table"
 
@@ -20,7 +20,7 @@ data class PieceToPractice(
     val id: Int? = null,  // unique identifier of the piece
 
     // the following parameters should always keep their default values and not be set explicitly
-    val dateAdded: LocalDate = LocalDate.now(),
-    var dateLastPlayed: LocalDate? = null,
+    val dateAdded: LocalDateTime = LocalDateTime.now(),
+    var dateLastPlayed: LocalDateTime? = null,
     val daysPlayedCount: Int = 0,
 ) : Parcelable
