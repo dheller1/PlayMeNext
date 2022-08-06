@@ -11,7 +11,8 @@ import com.example.playmenext.R
 import com.example.playmenext.domain.PieceToPractice
 
 class PiecesListAdapter(
-    private val _onItemClickListener : ((PieceToPractice) -> Unit)? = null
+    private val _onItemClickListener : ((PieceToPractice) -> Unit)? = null,
+    private val _onItemLongClickListener : ((PieceToPractice) -> Boolean)? = null
 ) : ListAdapter<PieceToPractice, PiecesListAdapter.PieceViewHolder>(PieceComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : PieceViewHolder {
@@ -22,7 +23,10 @@ class PiecesListAdapter(
         val current = getItem(position)
         holder.bind("${current.title} - ${current.urgency}")
         if(_onItemClickListener != null) {
-            holder.itemView.setOnClickListener{ _onItemClickListener.invoke(current) }
+            holder.itemView.setOnClickListener { _onItemClickListener.invoke(current) }
+        }
+        if(_onItemLongClickListener != null) {
+            holder.itemView.setOnLongClickListener{ _onItemLongClickListener.invoke(current) }
         }
     }
 

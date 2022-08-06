@@ -27,7 +27,7 @@ data class PieceToPractice(
     // the following parameters should always keep their default values and not be set explicitly
     val dateAdded: LocalDateTime = LocalDateTime.now(),
     var dateLastPlayed: LocalDateTime? = null,
-    val daysPlayedCount: Int = 0,
+    var daysPlayedCount: Int = 0,
 ) : Parcelable
 {
     private val urgencyReferenceDateTime : LocalDateTime get() = dateLastPlayed ?: dateAdded

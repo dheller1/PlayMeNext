@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playmenext.adapters.PiecesListAdapter
 import com.example.playmenext.application.MainApplication
 import com.example.playmenext.domain.PieceToPractice
+import com.example.playmenext.ui.dialogs.ConfirmPlayedDialog
 import com.example.playmenext.viewmodel.PieceToPracticeViewModel
 import com.example.playmenext.viewmodel.PieceToPracticeViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import java.time.LocalDateTime
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -31,7 +33,8 @@ class MainActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
 
         val adapter =  PiecesListAdapter(
-            _onItemClickListener = this::onPieceClicked
+            _onItemClickListener = this::onPieceClicked,
+            _onItemLongClickListener = this::onPieceLongClicked
         )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -56,6 +59,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun updatePiecesList() {
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
+        // use this.lifecycleScope ?
+        val getPiecesJob = GlobalScope.async { _piecesViewModel.allPieces }
+        getPiecesJob.invokeOnCompletion { cause ->
+            if(cause != null) {
+                Toast.makeText(this, R.string.retrieve_pieces_error, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val pieces = getPiecesJob.getCompleted().sortedByDescending { it.urgency }
+                val adapter = recyclerView.adapter as PiecesListAdapter
+                adapter.submitList(pieces)
+            }
+        }
+    }
+
+
     private var resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) {
             result ->
@@ -74,12 +94,25 @@ class MainActivity : AppCompatActivity() {
         }
 
     private fun onPieceClicked(item : PieceToPractice) {
-        // Toast.makeText(this, item.title, Toast.LENGTH_SHORT).show()
+        val dlg = ConfirmPlayedDialog(this)
+        dlg.show {
+            if(it == ConfirmPlayedDialog.ResponseType.YES) {
+                item.dateLastPlayed = LocalDateTime.now()
+                ++item.daysPlayedCount
+                _piecesViewModel.insert(item)
+                updatePiecesList()
+            }
+        }
+    }
+
+    private fun onPieceLongClicked(item : PieceToPractice) : Boolean {
         if(item.id != null) {
             val intent = Intent(this, EditPieceActivity::class.java).apply {
                 putExtra(EXTRA_PIECE_INST, item)
             }
             resultLauncher.launch(intent)
+            return true
         }
+        return false
     }
 }
