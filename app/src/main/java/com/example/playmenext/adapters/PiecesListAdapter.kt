@@ -20,7 +20,7 @@ class PiecesListAdapter(
 
     override fun onBindViewHolder(holder: PieceViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current.title)
+        holder.bind("${current.title} - ${current.urgency}")
         if(_onItemClickListener != null) {
             holder.itemView.setOnClickListener{ _onItemClickListener.invoke(current) }
         }

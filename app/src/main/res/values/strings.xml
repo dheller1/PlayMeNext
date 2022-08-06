@@ -14,4 +14,5 @@
     <string name="lbl_composer">Composer</string>
     <string name="lbl_arranger">Arranger</string>
     <string name="lbl_priority">Priority</string>
+    <string name="retrieve_pieces_error">Error: Unable to retrieve pieces from database!</string>
 </resources>

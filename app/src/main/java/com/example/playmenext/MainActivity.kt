@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,9 @@ import com.example.playmenext.domain.PieceToPractice
 import com.example.playmenext.viewmodel.PieceToPracticeViewModel
 import com.example.playmenext.viewmodel.PieceToPracticeViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     private val _piecesViewModel: PieceToPracticeViewModel by viewModels {
@@ -25,17 +29,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
-        val adapter = PiecesListAdapter(
+
+        val adapter =  PiecesListAdapter(
             _onItemClickListener = this::onPieceClicked
         )
-
-
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        _piecesViewModel.allPieces.observe(this) { pieces ->
-            pieces?.let { adapter.submitList(it) }
+        val getPiecesJob = GlobalScope.async { _piecesViewModel.allPieces }
+        getPiecesJob.invokeOnCompletion { cause ->
+            if(cause != null) {
+                Toast.makeText(this, R.string.retrieve_pieces_error, Toast.LENGTH_SHORT).show()
+            }
+            else {
+                val pieces = getPiecesJob.getCompleted().sortedByDescending { it.urgency }
+                adapter.submitList(pieces)
+            }
         }
+
+        //adapter.submitList(_piecesViewModel.allPieces)
 
         val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.setOnClickListener {

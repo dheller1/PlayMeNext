@@ -7,7 +7,7 @@ import kotlinx.coroutines.launch
 
 class PieceToPracticeViewModel(private val _repo : PiecesRepository) : ViewModel() {
     // use LiveData and caching to get observable data (instead of active polling)
-    val allPieces: LiveData<List<PieceToPractice>> = _repo.allPieces.asLiveData()
+    val allPieces: List<PieceToPractice> = _repo.allPieces
 
     // launch new coroutine to insert data non-blocking
     fun insert(piece : PieceToPractice) = viewModelScope.launch {

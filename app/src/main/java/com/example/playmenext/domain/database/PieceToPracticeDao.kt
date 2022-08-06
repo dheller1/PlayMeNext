@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PieceToPracticeDao {
-    @Query("SELECT * FROM $TABLE_NAME ORDER BY title ASC")
-    fun getAllPieces() : Flow<List<PieceToPractice>>
+    @Query("SELECT * FROM $TABLE_NAME")
+    fun getAllPieces() : List<PieceToPractice>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(piece : PieceToPractice)
