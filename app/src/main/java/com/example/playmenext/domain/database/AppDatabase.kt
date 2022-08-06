@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.playmenext.domain.PieceToPractice
-import com.example.playmenext.domain.PiecesRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -17,7 +16,7 @@ import kotlinx.coroutines.launch
     exportSchema = false
 )
 @TypeConverters(Converters::class)
-public abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun pieceDao() : PieceToPracticeDao
 

@@ -48,7 +48,7 @@ class PiecesListAdapter(
         }
 
         override fun areContentsTheSame(oldItem: PieceToPractice, newItem: PieceToPractice): Boolean {
-            return oldItem.id == newItem.id;
+            return oldItem.id == newItem.id
         }
     }
 
