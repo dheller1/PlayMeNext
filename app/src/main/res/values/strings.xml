@@ -19,4 +19,9 @@
     <string name="confirm_played_dialog_message">Did you play %1$s?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="last_played_text">last played: %1$s</string>
+    <string name="rc_never">never</string>
+    <string name="rc_just_now">just now</string>
+    <!-- could be "vor %1$d" in German for instance -->
+    <string name="rc_time_ago">%1$s ago</string>
 </resources>

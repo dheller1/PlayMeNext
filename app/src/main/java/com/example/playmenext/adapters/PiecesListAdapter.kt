@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playmenext.R
 import com.example.playmenext.domain.PieceToPractice
+import java.time.Duration
+import java.time.LocalDateTime
 
 class PiecesListAdapter(
     private val _onItemClickListener : ((PieceToPractice) -> Unit)? = null,
@@ -34,6 +36,7 @@ class PiecesListAdapter(
         private val tvTitle: TextView = itemView.findViewById(R.id.tv_title)
         private val tvSubtitle: TextView = itemView.findViewById(R.id.tv_subtitle)
         private val tvComposer: TextView = itemView.findViewById(R.id.tv_composer)
+        private val tvLastPlayed: TextView = itemView.findViewById(R.id.tv_last_played)
 
         fun bind(piece: PieceToPractice) {
             tvTitle.text = piece.title
@@ -45,6 +48,32 @@ class PiecesListAdapter(
             else {
                 tvSubtitle.visibility = View.GONE
             }
+            tvLastPlayed.text = lastPlayedText(piece)
+        }
+
+        private fun lastPlayedText(piece: PieceToPractice) : String {
+            val res = itemView.resources
+            val filler =
+                if(piece.dateLastPlayed == null) {
+                    res.getString(R.string.rc_never)
+                }
+                else {
+                    val deltaT = Duration.between(piece.dateLastPlayed, LocalDateTime.now())
+                    if(deltaT < Duration.ofMinutes(1)) {
+                        res.getString(R.string.rc_just_now)
+                    }
+                    else if(deltaT < Duration.ofHours(1)) {
+                        String.format(res.getString(R.string.rc_time_ago, "${deltaT.toMinutes()}m"))
+                    }
+                    else if(deltaT < Duration.ofDays(1)) {
+                        String.format(res.getString(R.string.rc_time_ago, "${deltaT.toHours()}h"))
+                    }
+                    else {
+                        String.format(res.getString(R.string.rc_time_ago,"${deltaT.toDays()}d"))
+                    }
+                }
+
+            return String.format(res.getString(R.string.last_played_text), filler)
         }
 
         companion object {
