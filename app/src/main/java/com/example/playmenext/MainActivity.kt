@@ -95,8 +95,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun onPieceClicked(item : PieceToPractice) {
         val dlg = ConfirmPlayedDialog(this)
-        dlg.show {
-            if(it == ConfirmPlayedDialog.ResponseType.YES) {
+        dlg.show(item.title) {
+            if (it == ConfirmPlayedDialog.ResponseType.YES) {
                 item.dateLastPlayed = LocalDateTime.now()
                 ++item.daysPlayedCount
                 _piecesViewModel.insert(item)

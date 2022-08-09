@@ -16,7 +16,7 @@
     <string name="lbl_priority">Priority</string>
     <string name="retrieve_pieces_error">Error: Unable to retrieve pieces from database!</string>
     <string name="confirm_played_dialog_title">Confirm</string>
-    <string name="confirm_played_dialog_message">Did you play it?</string>
+    <string name="confirm_played_dialog_message">Did you play %1$s?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 </resources>

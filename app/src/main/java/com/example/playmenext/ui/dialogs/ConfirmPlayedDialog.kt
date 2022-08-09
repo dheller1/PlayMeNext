@@ -12,12 +12,14 @@ class ConfirmPlayedDialog(context: Context) : AlertDialog.Builder(context) {
         YES, NO
     }
 
-    fun show(listener: (r : ResponseType) -> Unit) {
+    fun show(pieceTitle: String, listener: (r : ResponseType) -> Unit) {
         onResponse = listener
 
         val builder = AlertDialog.Builder(context)
         builder.setTitle(R.string.confirm_played_dialog_title)
-        builder.setMessage(R.string.confirm_played_dialog_message)
+        val msg = String.format(context.resources.getString(R.string.confirm_played_dialog_message),
+            pieceTitle)
+        builder.setMessage(msg)
         builder.setIcon(R.drawable.ic_baseline_music_note_24)
 
         builder.setPositiveButton(R.string.yes) { _, _ ->

@@ -21,7 +21,7 @@ class PiecesListAdapter(
 
     override fun onBindViewHolder(holder: PieceViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind("${current.title} - ${current.urgency}")
+        holder.bind(current)
         if(_onItemClickListener != null) {
             holder.itemView.setOnClickListener { _onItemClickListener.invoke(current) }
         }
@@ -31,10 +31,20 @@ class PiecesListAdapter(
     }
 
     class PieceViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val pieceItemView: TextView = itemView.findViewById(R.id.textView)
+        private val tvTitle: TextView = itemView.findViewById(R.id.tv_title)
+        private val tvSubtitle: TextView = itemView.findViewById(R.id.tv_subtitle)
+        private val tvComposer: TextView = itemView.findViewById(R.id.tv_composer)
 
-        fun bind(text: String?) {
-            pieceItemView.text = text
+        fun bind(piece: PieceToPractice) {
+            tvTitle.text = piece.title
+            tvComposer.text = piece.composer
+            if(piece.subTitle.isNotEmpty()) {
+                tvSubtitle.visibility = View.VISIBLE
+                tvSubtitle.text = piece.subTitle
+            }
+            else {
+                tvSubtitle.visibility = View.GONE
+            }
         }
 
         companion object {
